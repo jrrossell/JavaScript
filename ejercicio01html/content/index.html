@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Peliculas</title>
+</head>
+
+<body>
+    <header>
+        <h1>Pelicula</h1>
+    </header>
+    <form action="#">
+        <label>
+            Titulo: <input type="text" placeholder="titulo de la pelicula" required />
+        </label>
+        <br><br><br>
+        <label>
+            Director: <input type="text" placeholder="director de la pelicula" required />
+        </label>
+        <br><br><br>
+        <label>
+            COD-ID: <input type="text" placeholder="AAA-12345-ZZ" required pattern="[a-zA-Z]{3}-[0-9]{5}-[a-zA-Z]{2}"/>
+        </label>
+        <br><br><br>
+        <label>
+            Genero: <select required>
+                        <option>-- Seleccione --</option>
+                        <option value="accion">Accion</option>
+                        <option value="comedia">Comedia</option>
+                        <option value="terror">Terror</option>
+                        <option value="cienciaficcion">Ciencia Ficcion</option>
+                    </select>
+        </label>
+        <br><br><br>
+        <label>
+            Fecha de Publicacion: <input type="date" required />
+        </label>
+        <br><br><br>
+        <label>
+            Valoracion: <input type="range" min="0" max="10" required />
+        </label>
+        <br><br><br>
+        <input type="submit" value="Enviar" />
+    </form>
+
+    <br><br>
+    <table border="1">
+            <tr>
+                <th>COD-ID</th>
+                <th>Titulo</th>
+                <th>Director</th>
+                <th>Genero</th>
+                <th>Fecha de Publicacion</th>
+                <th>Valoracion</th>
+            </tr>
+            <tr>
+                <td>ABC-12345-AA</td>
+                <td>Pelicula 1</td>
+                <td>Director 1</td>
+                <td>Genero 1</td>
+                <td>10-01-2019</td>
+                <td>10</td>
+            </tr>
+            <tr>
+                <td>ABC-12345-BB</td>
+                <td>Pelicula 2</td>
+                <td>Director 2</td>
+                <td>Genero 2</td>
+                <td>25-12-2017</td>
+                <td>5</td>
+            </tr>
+            <tr>
+                <td>ABC-12345-CC</td>
+                <td>Pelicula 3</td>
+                <td>Director 3</td>
+                <td>Genero 3</td>
+                <td>01-07-2010</td>
+                <td>3</td>
+            </tr>
+        </table>
+</body>
+
+</html>
