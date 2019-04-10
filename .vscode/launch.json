@@ -16,5 +16,11 @@
             "name": "Launch Calculadora",
             "program": "${workspaceFolder}\\ejercicio02js\\calculadora2.js"
         }
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch htmljs",
+            "program": "${workspaceFolder}\\ejemplo03htmljs\\js\\ejemplo03.js"
+        }
     ]
 }
