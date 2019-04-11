@@ -1,0 +1,13 @@
+[{
+    "id":"AAA-11111-AA",
+    "titulo":"El señor de los arillos 1",
+    "director":"Directorcillo",
+    "genero":"Algo 1"
+},
+{
+    "id":"AAA-11111-AB",
+    "titulo":"El señor de los arillos 2",
+    "director":"Directorcillo2",
+    "genero":"Algo 2"
+}
+]

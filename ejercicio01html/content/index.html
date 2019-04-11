@@ -7,11 +7,11 @@
     <title>Peliculas</title>
 </head>
 
-<body>
+<body onload="inicializar()">
     <header>
         <h1>Pelicula</h1>
     </header>
-
+    
         <label>
             Titulo: <input type="text" id="titulo" placeholder="titulo de la pelicula" required />
         </label>
@@ -46,7 +46,7 @@
 
         
     <br><br>
-    <table border="1" id="mitable"> 
+    <table border="1"> 
         <thead>
             <tr>
                 <th>COD-ID</th>
@@ -58,10 +58,11 @@
                 <th>Acciones</th>
             </tr>
         </thead>
-        <tbody id="valor">
+        <tbody id="filaDePeliculas">
             
         </tbody>
     </table>
+    <!--<button onclick="vaciarTabla()">Vaciar Tabla</button>-->
 </body>
 
 </html>
