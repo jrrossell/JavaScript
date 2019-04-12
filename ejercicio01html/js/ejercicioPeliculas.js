@@ -1,145 +1,165 @@
-var i = 1
+var listaPeliculas = new Array();
+var codigo = false
 
 function inicializar() {
-    if (localStorage.getItem("id") <= 1) {
+    //localStorage.removeItem("peliculas")
+    console.log(JSON.parse(localStorage.getItem("peliculas")))
+    var peliculasEnLocal = JSON.parse(localStorage.getItem("peliculas"))
+    if (peliculasEnLocal == null || peliculasEnLocal == false || peliculasEnLocal == 0) {
         var ajax = new XMLHttpRequest();
-        ajax.open("GET", "data.json");
+        ajax.open("GET", "http://192.168.1.63:8080/peliculas");
         ajax.onreadystatechange = function () {
             if (ajax.status == 200 && ajax.readyState == 4) {
                 datos = JSON.parse(ajax.responseText)
                 console.log(datos);
+                for (let h = 0; h < datos.length; h++) {
 
-                var titulo = datos[0].titulo
-                var director = datos[0].director
-                var cod = datos[0].cod
-                var genero = datos[0].genero
-                var fecha = datos[0].fecha
-                var valoracion = datos[0].valoracion
+                    var trPelicula = '<tr>'
+                        + '<td>' + datos[h].codId + '</td>'
+                        + '<td>' + datos[h].titulo + '</td>'
+                        + '<td>' + datos[h].director + '</td>'
+                        + '<td>' + datos[h].genero + '</td>'
+                        + '<td>' + datos[h].fecha + '</td>'
+                        + '<td>' + datos[h].valoracion + '</td>'
+                        + '<td><button onclick="eliminar(' + datos[h].codId + ')">Eliminar</button>'
+                        + '<button onclick="editar(' + datos[h].codId + ')">Editar</button></td>'
+                        + '</tr>'
 
-                localStorage.setItem("titulo" + i, titulo)
-                localStorage.setItem("director" + i, director)
-                localStorage.setItem("cod" + i, cod)
-                localStorage.setItem("genero" + i, genero)
-                localStorage.setItem("fecha" + i, fecha)
-                localStorage.setItem("valoracion" + i, valoracion)
-
-                var trPelicula = '<tr>'
-                    + '<td>' + cod + '</td>'
-                    + '<td>' + titulo + '</td>'
-                    + '<td>' + director + '</td>'
-                    + '<td>' + genero + '</td>'
-                    + '<td>' + fecha + '</td>'
-                    + '<td>' + valoracion + '</td>'
-                    + '<td><button onclick="eliminar(' + i + ')">Eliminar</button>'
-                    + '<button onclick="editar(' + i + ')">Editar</button></td>'
-                    + '</tr>'
-
-                var tbody = document.getElementById("filaDePeliculas")
-                var tr = document.createElement("tr")
-                tr.id = i
-                tr.innerHTML = trPelicula
-                tbody.appendChild(tr)
-
-                localStorage.setItem("id", i)
-                i++
+                    var tbody = document.getElementById("filaDePeliculas")
+                    var tr = document.createElement("tr")
+                    tr.id = datos[h].codId
+                    tr.innerHTML = trPelicula
+                    tbody.appendChild(tr)
+                }
+                localStorage.setItem("peliculas", JSON.stringify(datos))
             }
         }
         ajax.send();
     } else {
-        for (var j = 1; j <= localStorage.getItem("id"); j++) {
 
-            var titulo = localStorage.getItem("titulo" + j)
-            var director = localStorage.getItem("director" + j)
-            var cod = localStorage.getItem("cod" + j)
-            var genero = localStorage.getItem("genero" + j)
-            var fecha = localStorage.getItem("fecha" + j)
-            var valoracion = localStorage.getItem("valoracion" + j)
+
+        for (var j = 0; j < peliculasEnLocal.length; j++) {
+
+            var pelicula = peliculasEnLocal[j]
 
             var trPelicula = '<tr>'
-                + '<td>' + cod + '</td>'
-                + '<td>' + titulo + '</td>'
-                + '<td>' + director + '</td>'
-                + '<td>' + genero + '</td>'
-                + '<td>' + fecha + '</td>'
-                + '<td>' + valoracion + '</td>'
-                + '<td><button onclick="eliminar(' + j + ')">Eliminar</button>'
-                + '<button onclick="editar(' + j + ')">Editar</button></td>'
+                + '<td>' + pelicula.codId + '</td>'
+                + '<td>' + pelicula.titulo + '</td>'
+                + '<td>' + pelicula.director + '</td>'
+                + '<td>' + pelicula.genero + '</td>'
+                + '<td>' + pelicula.fecha + '</td>'
+                + '<td>' + pelicula.valoracion + '</td>'
+                + '<td><button onclick="eliminar(' + pelicula.codId + ')">Eliminar</button>'
+                + '<button onclick="editar(' + pelicula.codId + ')">Editar</button></td>'
                 + '</tr>'
 
             var tbody = document.getElementById("filaDePeliculas")
             var tr = document.createElement("tr")
-            tr.id = j
+            tr.id = pelicula.codId
             tr.innerHTML = trPelicula
             tbody.appendChild(tr)
         }
-        i = j
     }
 }
 
 function agregar() {
-    var titulo = document.getElementById("titulo").value
-    var director = document.getElementById("director").value
-    var cod = document.getElementById("cod").value
-    var genero = document.getElementById("genero").value
-    var fecha = document.getElementById("fecha").value
-    var valoracion = document.getElementById("valoracion").value
+    peli = new Pelicula()
+    peli.titulo = document.getElementById("titulo").value
+    peli.director = document.getElementById("director").value
+    peli.codId = document.getElementById("codId").value
+    peli.genero = document.getElementById("genero").value
+    peli.fecha = document.getElementById("fecha").value
+    peli.valoracion = document.getElementById("valoracion").value
 
-    localStorage.setItem("titulo" + i, titulo)
-    localStorage.setItem("director" + i, director)
-    localStorage.setItem("cod" + i, cod)
-    localStorage.setItem("genero" + i, genero)
-    localStorage.setItem("fecha" + i, fecha)
-    localStorage.setItem("valoracion" + i, valoracion)
+    if (codigo.disabled == true) {
+        actualizarPelicula(peli);
+        codigo.disabled = false;
+    } else {
+        this.listaPeliculas.push(peli);
+    }
 
-    var trPelicula = '<tr>'
-        + '<td>' + cod + '</td>'
-        + '<td>' + titulo + '</td>'
-        + '<td>' + director + '</td>'
-        + '<td>' + genero + '</td>'
-        + '<td>' + fecha + '</td>'
-        + '<td>' + valoracion + '</td>'
-        + '<td><button onclick="eliminar(' + i + ')">Eliminar</button>'
-        + '<button onclick="editar(' + i + ')">Editar</button></td>'
-        + '</tr>'
+    console.log(this.listaPeliculas)
+    localStorage.setItem("peliculas", JSON.stringify(this.listaPeliculas))
 
-    var tbody = document.getElementById("filaDePeliculas")
-    var tr = document.createElement("tr")
-    tr.id = i
-    tr.innerHTML = trPelicula
-    tbody.appendChild(tr)
-
-    localStorage.setItem("id", i)
-    i++
+    mostrarPeliculas(peli.codId)
     limpiarCampos()
 }
 
-function eliminar(j) {
-    document.getElementById(j).remove()
-    localStorage.removeItem(j)
+function mostrarPeliculas(codId) {
+    var lista = JSON.parse(localStorage.getItem("peliculas"))
+    console.log(lista)
+    for (let i = 0; i < lista.length; i++) {
+        let peliculaActual = lista[i];
+        if (peliculaActual.codId == codId) {
+
+
+            var trPelicula = '<tr>'
+                + '<td>' + peliculaActual.codId + '</td>'
+                + '<td>' + peliculaActual.titulo + '</td>'
+                + '<td>' + peliculaActual.director + '</td>'
+                + '<td>' + peliculaActual.genero + '</td>'
+                + '<td>' + peliculaActual.fecha + '</td>'
+                + '<td>' + peliculaActual.valoracion + '</td>'
+                + '<td><button onclick="eliminar(' + peliculaActual.codId + ')">Eliminar</button>'
+                + '<button onclick="editar(' + peliculaActual.codId + ')">Editar</button></td>'
+                + '</tr>'
+
+            var tbody = document.getElementById("filaDePeliculas")
+            var tr = document.createElement("tr")
+            tr.id = peliculaActual.codId
+            tr.innerHTML = trPelicula
+            tbody.appendChild(tr)
+        }
+    }
+}
+
+function eliminar(codId) {
+    var lista = JSON.parse(localStorage.getItem("peliculas"))
+    for (let i = 0; i < lista.length; i++) {
+        let peliculaActual = lista[i];
+        if (peliculaActual.codId == codId) {
+            lista.splice(i, 1);
+            localStorage.setItem("peliculas", JSON.stringify(lista))
+            document.getElementById(codId).remove()
+        }
+    }
 }
 
 function limpiarCampos() {
     document.getElementById("titulo").value = ""
     document.getElementById("director").value = ""
-    document.getElementById("cod").value = ""
+    document.getElementById("codId").value = ""
     document.getElementById("genero").value = ""
     document.getElementById("fecha").value = ""
     document.getElementById("valoracion").value = ""
 }
 
-function editar(i) {
-    document.getElementById("titulo").value = localStorage.getItem("titulo" + i)
-    document.getElementById("director").value = localStorage.getItem("director" + i)
-    document.getElementById("cod").value = localStorage.getItem("cod" + i)
-    document.getElementById("genero").value = localStorage.getItem("genero" + i)
-    document.getElementById("fecha").value = localStorage.getItem("fecha" + i)
-    document.getElementById("valoracion").value = localStorage.getItem("valoracion" + i)
-
-    document.getElementById(i).remove()
-
+function editar(codId) {
+    console.log(JSON.parse(localStorage.getItem("peliculas")))
+    var listaPeliculas = JSON.parse(localStorage.getItem("peliculas"))
+    for (let i = 0; i < listaPeliculas.length; i++) {
+        let peliculaActual = listaPeliculas[i];
+        if (peliculaActual.codId == codId) {
+            codigo = document.getElementById("codId");
+            codigo.value = peliculaActual.codId
+            document.getElementById("titulo").value = peliculaActual.titulo
+            document.getElementById("director").value = peliculaActual.director
+            document.getElementById("genero").value = peliculaActual.genero
+            document.getElementById("fecha").value = peliculaActual.fecha
+            document.getElementById("valoracion").value = peliculaActual.valoracion
+            codigo.disabled = true;
+        }
+    }
 }
 
-function vaciarTabla() {
-    localStorage.removeItem("id")
-    location.reload()
+function actualizarPelicula(pelicula) {
+    var listaPeliculas = JSON.parse(localStorage.getItem("peliculas"))
+    for (let i = 0; i < listaPeliculas.length; i++) {
+        let peliculaActual = listaPeliculas[i];
+        if (peliculaActual.codId == pelicula.codId) {
+            listaPeliculas[i] = pelicula;
+            this.listaPeliculas[i] = pelicula
+            
+        }
+    }
 }
